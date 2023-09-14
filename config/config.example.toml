@@ -1,0 +1,34 @@
+[database]
+name = "database-name"
+host = "localhost"
+username = "postgres-username"
+password = "postgres-password"
+port = 5432
+sslmode = false
+debug = true
+timezone = "asia/bangkok"
+
+[server]
+port = 9000
+application_name = "your-application-name"
+debug = true
+
+[jwt]
+secret = "your-secret-key"
+issuer = "your-issuer"
+domain = "your-domain"
+expiration_time = 3600
+refresh_expiration_time = 86400
+
+[taximail]
+api_key = "*optional"
+secret_key = "*optional"
+sms_template = "*optional"
+url = "*optional"
+
+[redis]
+address = "localhost:6379"
+password = "your-redis-password"
+channel = 0
+expire = 3600
+timeout = 10
