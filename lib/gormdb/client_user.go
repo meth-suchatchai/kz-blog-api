@@ -41,15 +41,16 @@ func (c *DB) DeleteUser(id uint) bool {
 	return true
 }
 
-func (c *DB) GetUserByMobileNumber(mobileNumber string) (*dbmodels.User, error) {
-	var user dbmodels.User
-	err := c.orm.Find(&user, "mobile_number = ?", mobileNumber).Error
-	if err != nil {
-		log.Errorf("get user failed: %v", err)
-		return nil, err
+func (c *DB) GetUserByMobileNumber(mobileNumber, countryCode string) (*dbmodels.User, error) {
+	var user = &dbmodels.User{}
+	log.Info("DB - GetUserByMobileNumber: ", mobileNumber, countryCode)
+	exec := c.orm.Where("mobile_number = ? AND country_code = ?", mobileNumber, countryCode).First(&user)
+	if exec.Error != nil {
+		log.Errorf("get user failed: %v", exec.Error)
+		return nil, exec.Error
 	}
 
-	return &user, nil
+	return user, nil
 }
 
 func (c *DB) CreateUser(data *dbmodels.User) (*dbmodels.User, error) {

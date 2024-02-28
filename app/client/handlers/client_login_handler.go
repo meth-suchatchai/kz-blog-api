@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	clientmodels "github.com/kuroshibaz/app/client/models"
 	"github.com/kuroshibaz/lib/errors"
+	coremodels "github.com/kuroshibaz/models"
 )
 
 func (h *defaultHandler) Login(ctx *fiber.Ctx) error {
@@ -35,5 +36,5 @@ func (h *defaultHandler) Login(ctx *fiber.Ctx) error {
 		},
 	}
 
-	return ctx.JSON(clientmodels.CreateSuccessResponse(response))
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }

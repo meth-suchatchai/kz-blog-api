@@ -14,6 +14,8 @@ type Env struct {
 	TaxiMail `mapstructure:"TAXIMAIL"`
 	JWT      `mapstructure:"JWT"`
 	Storage  `mapstructure:"STORAGE"`
+	Line     `mapstructure:"LINE"`
+	Kafka    `mapstructure:"KAFKA"`
 }
 
 func ReadConfig(path string) (*Env, error) {

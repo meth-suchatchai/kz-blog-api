@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 	blogmodels "github.com/kuroshibaz/app/blog/models"
 	constant "github.com/kuroshibaz/const"
+	coremodels "github.com/kuroshibaz/models"
 )
 
 func (h *defaultHandler) CreateBlog(ctx *fiber.Ctx) error {
@@ -34,5 +35,6 @@ func (h *defaultHandler) CreateBlog(ctx *fiber.Ctx) error {
 		return vErr
 	}
 
-	return h.svc.CreateBlog(&blogmodels.Blog{})
+	response := &blogmodels.Blog{}
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }

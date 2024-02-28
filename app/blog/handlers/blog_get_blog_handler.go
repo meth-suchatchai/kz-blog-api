@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	blogmodels "github.com/kuroshibaz/app/blog/models"
 	"github.com/kuroshibaz/lib/errors"
+	coremodels "github.com/kuroshibaz/models"
 )
 
 func (h *defaultHandler) GetBlog(ctx *fiber.Ctx) error {
@@ -24,5 +25,5 @@ func (h *defaultHandler) GetBlog(ctx *fiber.Ctx) error {
 	response := &blogmodels.GetBlogResponse{
 		Blog: *res,
 	}
-	return ctx.JSON(response)
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }

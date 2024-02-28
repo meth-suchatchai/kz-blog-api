@@ -8,6 +8,7 @@ import (
 	bloghandlers "github.com/kuroshibaz/app/blog/handlers"
 	blogrepositories "github.com/kuroshibaz/app/blog/repositories"
 	blogservices "github.com/kuroshibaz/app/blog/services"
+	calculateservices "github.com/kuroshibaz/app/calculate/services"
 	clienthandlers "github.com/kuroshibaz/app/client/handlers"
 	clientservices "github.com/kuroshibaz/app/client/services"
 	etcdservices "github.com/kuroshibaz/app/etcd/services"
@@ -22,6 +23,7 @@ import (
 	"github.com/kuroshibaz/config"
 	"github.com/kuroshibaz/lib/gormdb"
 	kzjwt "github.com/kuroshibaz/lib/jwt"
+	"github.com/kuroshibaz/lib/kzline"
 	"github.com/kuroshibaz/lib/kzobjectstorage"
 	"github.com/kuroshibaz/lib/taximail"
 	"github.com/kuroshibaz/lib/totp"
@@ -42,6 +44,7 @@ type Options struct {
 	Jwt             kzjwt.AuthJWT
 	Redis           *redis.Client
 	StorageService  kzobjectstorage.StorageBucket
+	LineService     kzline.LineNotification
 }
 
 func NewRouter(opts *Options) *fiber.App {
@@ -135,7 +138,7 @@ func NewRouter(opts *Options) *fiber.App {
 		client.Post("/verify/otp", cliHandler.VerifyOTP)
 		client.Get("/blogs", cliHandler.ListBlog)
 		client.Get("/blog/:slug", cliHandler.GetBlog)
-		client.Get("/blog/views/:slug", cliHandler.UpdateViewBlog)
+		client.Put("/blog/views/:slug", cliHandler.UpdateViewBlog)
 	}
 
 	crm := v1.Group("/crm")
@@ -177,6 +180,18 @@ func NewRouter(opts *Options) *fiber.App {
 		blog.Put(":id", pemMiddleware.CheckPermission("UPDATE_BLOG"), blogHandler.UpdateBlog)
 		blog.Delete(":id", pemMiddleware.CheckPermission("DELETE_BLOG"), blogHandler.DeleteBlog)
 	}
+
+	c := calculateservices.NewService()
+	v1.Post("/calc", func(ctx *fiber.Ctx) error {
+		//delivery := make(chan kafka.Event, 10000)
+		//err = p.Produce(&kafka.Message{
+		//	TopicPartition: kafka.TopicPartition{Topic: topic, Partition: kafka.PartitionAny},
+		//	Value:          []byte(value)},
+		//	delivery_chan,
+		//)
+		c.SampleService()
+		return nil
+	})
 
 	return app
 }

@@ -3,6 +3,7 @@ package clienthandlers
 import (
 	"github.com/gofiber/fiber/v2"
 	clientmodels "github.com/kuroshibaz/app/client/models"
+	coremodels "github.com/kuroshibaz/models"
 )
 
 func (h *defaultHandler) RegisterAdmin(ctx *fiber.Ctx) error {
@@ -34,5 +35,5 @@ func (h *defaultHandler) RegisterAdmin(ctx *fiber.Ctx) error {
 		OTPReferenceNumber: userVerify.OTPReferenceNumber,
 	}
 
-	return ctx.JSON(response)
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }

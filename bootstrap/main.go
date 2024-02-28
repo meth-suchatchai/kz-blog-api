@@ -7,6 +7,7 @@ import (
 	"github.com/kuroshibaz/config"
 	"github.com/kuroshibaz/lib/gormdb"
 	kzjwt "github.com/kuroshibaz/lib/jwt"
+	"github.com/kuroshibaz/lib/kzline"
 	"github.com/kuroshibaz/lib/kzobjectstorage"
 	"github.com/kuroshibaz/lib/taximail"
 	"github.com/kuroshibaz/lib/totp"
@@ -31,7 +32,7 @@ func main() {
 	err = db.Migrate()
 	//db.Seed()
 	if err != nil {
-		log.Fatal("migrate: ", err)
+		log.Fatalf("error migrate: %v", err)
 	}
 
 	rc := resty.New()
@@ -88,6 +89,13 @@ func main() {
 		RefreshExpire: cfg.JWT.RefreshExpire,
 	})
 
+	lineCli := kzline.NewLineNotification(cfg.Line.BotApi, cfg.Line.LineApi, cfg.Line.AccessToken, rc)
+	log.Println(lineCli.GetApiStatus())
+	log.Println(lineCli.PushMessage(kzline.PushMessageRequest{
+		Message:              "Test",
+		NotificationDisabled: false,
+	}))
+
 	app := router.NewRouter(&router.Options{
 		Env:             cfg,
 		Db:              db,
@@ -98,6 +106,7 @@ func main() {
 		Jwt:             kzjwt,
 		Redis:           redisCli,
 		StorageService:  bucketCli,
+		LineService:     lineCli,
 	})
 
 	quit := make(chan os.Signal, 1)
@@ -124,7 +133,7 @@ func main() {
 func loadConfig() *config.Env {
 	cfg, err := config.ReadConfig("config")
 	if err != nil {
-		log.Fatalf("error %v", err)
+		log.Fatalf("error config: %v", err)
 	}
 
 	return cfg

@@ -6,8 +6,8 @@ import (
 	"github.com/kuroshibaz/lib/errors"
 )
 
-func (repo *defaultRepository) GetUserByMobileNumber(mobileNumber string) (*usermodels.User, *fiber.Error) {
-	user, err := repo.cli.GetUserByMobileNumber(mobileNumber)
+func (repo *defaultRepository) GetUserByMobileNumber(mobileNumber, countryCode string) (*usermodels.User, *fiber.Error) {
+	user, err := repo.cli.GetUserByMobileNumber(mobileNumber, countryCode)
 	if err != nil {
 		return nil, fiber.NewError(errors.ErrCodeInternalServer, err.Error())
 	}

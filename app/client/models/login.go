@@ -1,9 +1,9 @@
 package clientmodels
 
 type LoginData struct {
-	MobileNumber int    `json:"mobile_number"`
-	CountryCode  int    `json:"country_code"`
-	Password     string `json:"password"`
+	MobileNumber string `json:"mobile_number" required:"true"`
+	CountryCode  string `json:"country_code" required:"true"`
+	Password     string `json:"password" required:"true"`
 }
 
 type LoginRequest struct {

@@ -5,6 +5,7 @@ import (
 	clientmodels "github.com/kuroshibaz/app/client/models"
 	constant "github.com/kuroshibaz/const"
 	"github.com/kuroshibaz/lib/errors"
+	coremodels "github.com/kuroshibaz/models"
 )
 
 func (h *defaultHandler) GetBlog(ctx *fiber.Ctx) error {
@@ -20,5 +21,5 @@ func (h *defaultHandler) GetBlog(ctx *fiber.Ctx) error {
 
 	response := clientmodels.GetBlogResponse{Blog: *blog}
 
-	return ctx.JSON(clientmodels.CreateSuccessResponse(response))
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }

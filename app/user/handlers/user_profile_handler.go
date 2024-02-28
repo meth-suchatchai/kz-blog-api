@@ -5,6 +5,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	usermodels "github.com/kuroshibaz/app/user/models"
 	"github.com/kuroshibaz/lib/errors"
+	coremodels "github.com/kuroshibaz/models"
 	"strconv"
 )
 
@@ -24,5 +25,5 @@ func (h *defaultHandler) Profile(ctx *fiber.Ctx) error {
 		TwoFactorEnabled: user.IsTFA,
 	}}
 
-	return ctx.JSON(response)
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }

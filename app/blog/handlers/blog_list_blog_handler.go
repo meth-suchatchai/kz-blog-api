@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	blogmodels "github.com/kuroshibaz/app/blog/models"
 	constant "github.com/kuroshibaz/const"
+	coremodels "github.com/kuroshibaz/models"
 )
 
 func (h *defaultHandler) ListBlog(ctx *fiber.Ctx) error {
@@ -20,5 +21,7 @@ func (h *defaultHandler) ListBlog(ctx *fiber.Ctx) error {
 	}
 	response := &blogmodels.ListBlogResponse{Blogs: newBlogs}
 
-	return ctx.JSON(response)
+	//return ctx.Status(fiber.StatusInternalServerError).JSON(errors.NewDefaultFiberMessageError("test"))
+
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }

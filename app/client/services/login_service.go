@@ -1,7 +1,6 @@
 package clientservices
 
 import (
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	clientmodels "github.com/kuroshibaz/app/client/models"
@@ -11,8 +10,8 @@ import (
 )
 
 func (svc *defaultService) Login(data clientmodels.LoginData) (*usermodels.User, *kzjwt.AccessToken, *fiber.Error) {
-	mobileNumber := fmt.Sprintf("%v", data.MobileNumber)
-	user, err := svc.userRepository.GetUserByMobileNumber(mobileNumber)
+	log.Info("Service Login: ", data)
+	user, err := svc.userRepository.GetUserByMobileNumber(data.MobileNumber, data.CountryCode)
 	log.Info("GetUserByMobileNumber: ", user, err)
 	if err != nil {
 		//check when mobile number not found

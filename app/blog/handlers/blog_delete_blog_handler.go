@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	blogmodels "github.com/kuroshibaz/app/blog/models"
 	"github.com/kuroshibaz/lib/errors"
+	coremodels "github.com/kuroshibaz/models"
 )
 
 func (h *defaultHandler) DeleteBlog(ctx *fiber.Ctx) error {
@@ -21,5 +22,6 @@ func (h *defaultHandler) DeleteBlog(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(err)
 	}
 
-	return ctx.JSON(&blogmodels.DeleteBlogResponse{})
+	response := &blogmodels.DeleteBlogResponse{}
+	return ctx.JSON(coremodels.CreateSuccessResponse(response))
 }
