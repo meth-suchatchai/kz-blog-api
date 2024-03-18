@@ -3,6 +3,7 @@ package usermodels
 type User struct {
 	Id           int64  `json:"id" mapstructure:"id"`
 	MobileNumber string `json:"mobile_number" mapstructure:"mobile_number"`
+	CountryCode  string `json:"country_code" mapstructure:"country_code"`
 	Password     string `json:"password" mapstructure:"password_encrypted"`
 	Name         string `json:"name" mapstructure:"name"`
 	Active       bool   `json:"active" mapstructure:"active"`

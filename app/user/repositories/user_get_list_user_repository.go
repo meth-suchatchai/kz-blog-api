@@ -7,7 +7,7 @@ import (
 )
 
 func (repo *defaultRepository) GetListUser() ([]dbmodels.User, *fiber.Error) {
-	users, err := repo.cli.ListUser()
+	users, err := repo.orm.ListUser()
 	if err != nil {
 		return nil, fiber.NewError(errors.ErrCodeInternalServer, err.Error())
 	}

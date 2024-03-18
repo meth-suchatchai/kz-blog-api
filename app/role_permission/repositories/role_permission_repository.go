@@ -7,7 +7,7 @@ import (
 )
 
 func (repo *defaultRepository) RolePermission() (*[]rpmodels.RolePermission, *fiber.Error) {
-	roles, err := repo.db.GetRolePermission()
+	roles, err := repo.orm.GetRolePermission()
 	if err != nil {
 		return nil, errors.NewDefaultFiberError(err)
 	}

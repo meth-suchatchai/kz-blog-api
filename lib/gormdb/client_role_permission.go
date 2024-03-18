@@ -6,15 +6,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func (c *DB) CreateRole(r *dbmodels.Role) error {
+func (c *defaultClient) CreateRole(r *dbmodels.Role) error {
 	return c.orm.Create(r).Error
 }
 
-func (c *DB) CreatePermission(r *dbmodels.Permission) error {
+func (c *defaultClient) CreatePermission(r *dbmodels.Permission) error {
 	return c.orm.Create(r).Error
 }
 
-func (c *DB) GetRoles(opts ...int) (*[]dbmodels.Role, error) {
+func (c *defaultClient) GetRoles(opts ...int) (*[]dbmodels.Role, error) {
 	var roles []dbmodels.Role
 	page := 1
 	limit := 100
@@ -33,7 +33,7 @@ func (c *DB) GetRoles(opts ...int) (*[]dbmodels.Role, error) {
 	return &roles, nil
 }
 
-func (c *DB) GetRolePermission() (*[]dbmodels.Role, error) {
+func (c *defaultClient) GetRolePermission() (*[]dbmodels.Role, error) {
 	var roles []dbmodels.Role
 	err := c.orm.Preload("Permission", "is_active = ?", true).
 		Find(&roles).Error
@@ -46,7 +46,7 @@ func (c *DB) GetRolePermission() (*[]dbmodels.Role, error) {
 	return &roles, nil
 }
 
-func (c *DB) GetPermission(permissionCode string) (*dbmodels.Permission, error) {
+func (c *defaultClient) GetPermission(permissionCode string) (*dbmodels.Permission, error) {
 	var pem dbmodels.Permission
 	err := c.orm.First(&pem, "code = ?", permissionCode).Error
 	if err != nil {
@@ -56,7 +56,7 @@ func (c *DB) GetPermission(permissionCode string) (*dbmodels.Permission, error) 
 	return &pem, nil
 }
 
-func (c *DB) AssignRoleToUser(roleId uint, userId uint) (*dbmodels.Role, error) {
+func (c *defaultClient) AssignRoleToUser(roleId uint, userId uint) (*dbmodels.Role, error) {
 	role := dbmodels.Role{Model: gorm.Model{ID: roleId}}
 	tx := c.orm.Begin()
 	tx.Preload("Permission", "is_active = ?", true).
@@ -85,7 +85,7 @@ func (c *DB) AssignRoleToUser(roleId uint, userId uint) (*dbmodels.Role, error) 
 	return nil, nil
 }
 
-func (c *DB) AssignPermissionToRole(role string) {
+func (c *defaultClient) AssignPermissionToRole(role string) {
 	switch role {
 	case "Admin":
 		permissions, err := c.allPermissionGet()
@@ -109,7 +109,7 @@ func (c *DB) AssignPermissionToRole(role string) {
 	}
 }
 
-func (c *DB) allPermissionGet() ([]dbmodels.Permission, error) {
+func (c *defaultClient) allPermissionGet() ([]dbmodels.Permission, error) {
 	var pems []dbmodels.Permission
 	err := c.orm.Find(&pems, "is_active = true").Error
 	return pems, err

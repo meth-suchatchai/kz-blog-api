@@ -3,9 +3,9 @@ package blogrepositories
 import "github.com/kuroshibaz/lib/gormdb"
 
 type defaultRepository struct {
-	orm *gormdb.DB
+	orm gormdb.Client
 }
 
-func NewRepository(db *gormdb.DB) Repository {
-	return &defaultRepository{orm: db}
+func NewRepository(orm gormdb.Client) Repository {
+	return &defaultRepository{orm: orm}
 }

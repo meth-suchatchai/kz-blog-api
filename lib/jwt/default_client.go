@@ -25,8 +25,9 @@ func New(cfg *config.JWT) AuthJWT {
 	}
 }
 
-func (c *defaultClient) generateExpireTime(duration time.Duration) int64 {
-	return time.Now().In(c.timezone).Add(time.Minute * duration).Unix()
+func (c *defaultClient) generateExpireTime(duration time.Duration) (time.Time, int64) {
+	dateTime := time.Now().In(c.timezone).Add(time.Minute * duration)
+	return dateTime, dateTime.Unix()
 }
 
 func (c *defaultClient) generateTokenClaim(uid int64, exp int64) (string, error) {

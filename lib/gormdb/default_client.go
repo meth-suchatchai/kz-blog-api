@@ -7,13 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type DB struct {
+type defaultClient struct {
 	orm  *gorm.DB
 	name string
 }
 
 // ConnectSQL connect orm database
-func ConnectSQL(cfg *config.Database) (*DB, error) {
+func ConnectSQL(cfg *config.Database) (Client, error) {
 	name := cfg.Name
 	ssl := "disable"
 	if cfg.SSLMode {
@@ -29,8 +29,12 @@ func ConnectSQL(cfg *config.Database) (*DB, error) {
 		return nil, err
 	}
 
-	return &DB{
+	return &defaultClient{
 		orm:  db,
 		name: name,
 	}, nil
+}
+
+func (c *defaultClient) ORM() *gorm.DB {
+	return c.orm
 }

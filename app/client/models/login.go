@@ -1,5 +1,7 @@
 package clientmodels
 
+import "time"
+
 type LoginData struct {
 	MobileNumber string `json:"mobile_number" required:"true"`
 	CountryCode  string `json:"country_code" required:"true"`
@@ -16,11 +18,11 @@ type LoginResponse struct {
 }
 
 type Authentication struct {
-	AccessToken        string `json:"access_token"`
-	AccessTokenExpire  int64  `json:"access_token_expire"`
-	RefreshToken       string `json:"refresh_token"`
-	RefreshTokenExpire int64  `json:"refresh_token_expire"`
-	Domain             string `json:"domain"`
+	AccessToken        string    `json:"access_token"`
+	AccessTokenExpire  time.Time `json:"access_token_expire"`
+	RefreshToken       string    `json:"refresh_token"`
+	RefreshTokenExpire time.Time `json:"refresh_token_expire"`
+	Domain             string    `json:"domain"`
 }
 
 type LoginUser struct {

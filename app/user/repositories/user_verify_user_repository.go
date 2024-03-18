@@ -6,7 +6,7 @@ import (
 )
 
 func (repo *defaultRepository) VerifyUser(id int64) *fiber.Error {
-	err := repo.cli.VerifyUser(uint(id))
+	err := repo.orm.VerifyUser(uint(id))
 	if err != nil {
 		return fiber.NewError(errors.ErrCodeInternalServer, err.Error())
 	}

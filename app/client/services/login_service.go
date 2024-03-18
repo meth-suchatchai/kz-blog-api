@@ -36,5 +36,11 @@ func (svc *defaultService) Login(data clientmodels.LoginData) (*usermodels.User,
 		return nil, nil, err
 	}
 
+	//Stored new token
+	err = svc.userRepository.CreateOrUpdateUserAuthentication(user, ac)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	return user, ac, nil
 }

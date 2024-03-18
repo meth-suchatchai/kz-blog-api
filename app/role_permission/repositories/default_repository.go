@@ -3,9 +3,9 @@ package rprepositories
 import "github.com/kuroshibaz/lib/gormdb"
 
 type defaultRepository struct {
-	db *gormdb.DB
+	orm gormdb.Client
 }
 
-func NewRepository(db *gormdb.DB) Repository {
-	return &defaultRepository{db: db}
+func NewRepository(orm gormdb.Client) Repository {
+	return &defaultRepository{orm: orm}
 }

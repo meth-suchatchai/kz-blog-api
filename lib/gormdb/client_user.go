@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (c *DB) ListUser() ([]dbmodels.User, error) {
+func (c *defaultClient) ListUser() ([]dbmodels.User, error) {
 	var users []dbmodels.User
 	tx := c.orm.Find(&users)
 	if tx.Error != nil {
@@ -15,7 +15,7 @@ func (c *DB) ListUser() ([]dbmodels.User, error) {
 	return users, nil
 }
 
-func (c *DB) GetUser(id uint) (*dbmodels.User, error) {
+func (c *defaultClient) GetUser(id uint) (*dbmodels.User, error) {
 	var user dbmodels.User
 	user.ID = id
 	err := c.orm.First(&user).Error
@@ -25,12 +25,12 @@ func (c *DB) GetUser(id uint) (*dbmodels.User, error) {
 	return &user, nil
 }
 
-func (c *DB) UpdateUser() bool {
+func (c *defaultClient) UpdateUser() bool {
 	//c.orm.Updates()
 	return false
 }
 
-func (c *DB) DeleteUser(id uint) bool {
+func (c *defaultClient) DeleteUser(id uint) bool {
 	var user dbmodels.User
 	user.ID = id
 	err := c.orm.Delete(&user).Error
@@ -41,7 +41,7 @@ func (c *DB) DeleteUser(id uint) bool {
 	return true
 }
 
-func (c *DB) GetUserByMobileNumber(mobileNumber, countryCode string) (*dbmodels.User, error) {
+func (c *defaultClient) GetUserByMobileNumber(mobileNumber, countryCode string) (*dbmodels.User, error) {
 	var user = &dbmodels.User{}
 	log.Info("DB - GetUserByMobileNumber: ", mobileNumber, countryCode)
 	exec := c.orm.Where("mobile_number = ? AND country_code = ?", mobileNumber, countryCode).First(&user)
@@ -53,7 +53,7 @@ func (c *DB) GetUserByMobileNumber(mobileNumber, countryCode string) (*dbmodels.
 	return user, nil
 }
 
-func (c *DB) CreateUser(data *dbmodels.User) (*dbmodels.User, error) {
+func (c *defaultClient) CreateUser(data *dbmodels.User) (*dbmodels.User, error) {
 	result := c.orm.Create(&data)
 	if result.Error != nil {
 		log.Errorf("create user failed: %v", result.Error)
@@ -63,7 +63,7 @@ func (c *DB) CreateUser(data *dbmodels.User) (*dbmodels.User, error) {
 	return data, nil
 }
 
-func (c *DB) UpdateTFAColumn(enabled bool) error {
+func (c *defaultClient) UpdateTFAColumn(enabled bool) error {
 	var user dbmodels.User
 	err := c.orm.Model(&user).Update("two_factor_enabled", enabled).Error
 	if err != nil {
@@ -73,7 +73,7 @@ func (c *DB) UpdateTFAColumn(enabled bool) error {
 	return nil
 }
 
-func (c *DB) VerifyUser(id uint) error {
+func (c *defaultClient) VerifyUser(id uint) error {
 	var user = dbmodels.User{Model: gorm.Model{ID: id}}
 	err := c.orm.Model(&user).Update("is_active", true).Error
 	if err != nil {
@@ -83,7 +83,7 @@ func (c *DB) VerifyUser(id uint) error {
 	return nil
 }
 
-func (c *DB) GetUserPermission(userId uint, permissionId uint) bool {
+func (c *defaultClient) GetUserPermission(userId uint, permissionId uint) bool {
 	//log.Info("getUserPermission: ", userId, permissionId)
 	var user = dbmodels.User{Model: gorm.Model{ID: userId}}
 	err := c.orm.Preload("Permission").Find(&user).Error

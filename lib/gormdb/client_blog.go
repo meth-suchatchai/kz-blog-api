@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (c *DB) GetBlogById(id uint) (*dbmodels.Blog, error) {
+func (c *defaultClient) GetBlogById(id uint) (*dbmodels.Blog, error) {
 	var blog = dbmodels.Blog{Model: gorm.Model{ID: id}}
 	err := c.orm.First(&blog).Error
 	if err != nil {
@@ -17,7 +17,7 @@ func (c *DB) GetBlogById(id uint) (*dbmodels.Blog, error) {
 	return &blog, nil
 }
 
-func (c *DB) GetContentBySlug(slug string) (*dbmodels.Blog, error) {
+func (c *defaultClient) GetContentBySlug(slug string) (*dbmodels.Blog, error) {
 	var blog dbmodels.Blog
 	err := c.orm.First(&blog, "slug = ?", slug).Error
 	if err != nil {
@@ -27,19 +27,19 @@ func (c *DB) GetContentBySlug(slug string) (*dbmodels.Blog, error) {
 	return &blog, nil
 }
 
-func (c *DB) CreateBlog(data *dbmodels.Blog) error {
+func (c *defaultClient) CreateBlog(data *dbmodels.Blog) error {
 	data.PublishedAt = time.Now()
 	data.Views = 0
 	data.ShortDescription = ""
 	return c.orm.Create(data).Error
 }
 
-func (c *DB) DeleteBlog(id uint) error {
+func (c *defaultClient) DeleteBlog(id uint) error {
 	var blog = dbmodels.Blog{Model: gorm.Model{ID: id}}
 	return c.orm.Delete(blog).Error
 }
 
-func (c *DB) UpdateBlog(data *dbmodels.Blog) error {
+func (c *defaultClient) UpdateBlog(data *dbmodels.Blog) error {
 	err := c.orm.Save(data).Error
 	if err != nil {
 		return err
@@ -48,7 +48,7 @@ func (c *DB) UpdateBlog(data *dbmodels.Blog) error {
 	return nil
 }
 
-func (c *DB) ListBlog(opts ...int) (*[]dbmodels.Blog, error) {
+func (c *defaultClient) ListBlog(opts ...int) (*[]dbmodels.Blog, error) {
 	var blogs []dbmodels.Blog
 	page := 1
 	limit := 100
@@ -68,7 +68,7 @@ func (c *DB) ListBlog(opts ...int) (*[]dbmodels.Blog, error) {
 	return &blogs, nil
 }
 
-func (c *DB) ListPopularTag() (*[]dbmodels.Tag, error) {
+func (c *defaultClient) ListPopularTag() (*[]dbmodels.Tag, error) {
 	var tags []dbmodels.Tag
 	err := c.orm.Order("ord desc").Find(&tags).Error
 	if err != nil {
@@ -81,15 +81,15 @@ func (c *DB) ListPopularTag() (*[]dbmodels.Tag, error) {
 	return &tags, nil
 }
 
-func (c *DB) CreateTag(data *dbmodels.Tag) error {
+func (c *defaultClient) CreateTag(data *dbmodels.Tag) error {
 	return c.orm.Create(data).Error
 }
 
-func (c *DB) CreateCategory(data *dbmodels.Category) error {
+func (c *defaultClient) CreateCategory(data *dbmodels.Category) error {
 	return c.orm.Create(data).Error
 }
 
-func (c *DB) ListCategory() (*[]dbmodels.Category, error) {
+func (c *defaultClient) ListCategory() (*[]dbmodels.Category, error) {
 	var categories []dbmodels.Category
 	err := c.orm.Find(&categories).Error
 	if err != nil {
@@ -101,11 +101,11 @@ func (c *DB) ListCategory() (*[]dbmodels.Category, error) {
 	return &categories, nil
 }
 
-func (c *DB) UpdateCategory(data *dbmodels.Category) error {
+func (c *defaultClient) UpdateCategory(data *dbmodels.Category) error {
 	return c.orm.Save(&data).Error
 }
 
-func (c *DB) CountViews(slug string) (int, error) {
+func (c *defaultClient) CountViews(slug string) (int, error) {
 	var blog dbmodels.Blog
 
 	tx := c.orm.First(&blog, "slug = ?", slug)

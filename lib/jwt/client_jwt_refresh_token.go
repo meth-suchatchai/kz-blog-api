@@ -35,8 +35,8 @@ func (c *defaultClient) JwtRefreshToken(refreshToken string) (*AccessToken, *fib
 		return nil, fiber.NewError(errors.ErrCodeInvalidJWT, err.Error())
 	}
 
-	extentTime := c.generateExpireTime(time.Minute * time.Duration(c.cfg.Expire))
-	newRefreshTime := c.generateExpireTime(time.Minute * time.Duration(c.cfg.RefreshExpire))
+	extentDateTime, extentTime := c.generateExpireTime(time.Minute * time.Duration(c.cfg.Expire))
+	newRefreshDateTime, newRefreshTime := c.generateExpireTime(time.Minute * time.Duration(c.cfg.RefreshExpire))
 
 	accessToken, vErr := c.generateTokenClaim(int64(uid), extentTime)
 	if vErr != nil {
@@ -50,9 +50,9 @@ func (c *defaultClient) JwtRefreshToken(refreshToken string) (*AccessToken, *fib
 
 	return &AccessToken{
 		AccessToken:        accessToken,
-		AccessTokenExpire:  extentTime,
+		AccessTokenExpire:  extentDateTime,
 		RefreshToken:       newRefreshToken,
-		RefreshTokenExpire: newRefreshTime,
+		RefreshTokenExpire: newRefreshDateTime,
 		Domain:             c.cfg.Domain,
 	}, nil
 }

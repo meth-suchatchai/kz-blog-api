@@ -5,6 +5,9 @@ import (
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
+	"github.com/gofiber/template/html/v2"
+	"github.com/golang-jwt/jwt/v5"
 	bloghandlers "github.com/kuroshibaz/app/blog/handlers"
 	blogrepositories "github.com/kuroshibaz/app/blog/repositories"
 	blogservices "github.com/kuroshibaz/app/blog/services"
@@ -32,11 +35,12 @@ import (
 	"github.com/redis/go-redis/v9"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"log"
+	"strconv"
 )
 
 type Options struct {
 	Env             *config.Env
-	Db              *gormdb.DB
+	Db              gormdb.Client
 	Rc              *resty.Client
 	TaximailService taximail.Client
 	EtcdClient      *clientv3.Client
@@ -53,6 +57,7 @@ func NewRouter(opts *Options) *fiber.App {
 	}
 
 	cv := validator.CustomValidator{Validator: validator.Validate}
+	viewEngine := html.New("views", ".html")
 
 	app := fiber.New(fiber.Config{
 		AppName: "kz-blog",
@@ -74,14 +79,24 @@ func NewRouter(opts *Options) *fiber.App {
 			// Return from handler
 			return nil
 		},
+		Views:       viewEngine,
+		ViewsLayout: "layouts/main",
 	})
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 	}))
+	app.Use(func(ctx *fiber.Ctx) error {
+		token := ctx.Get("KZ_API", "")
+		if token == "" || token != opts.Env.Server.AccessToken {
+			return ctx.Status(fiber.StatusForbidden).SendString("who are youuuuu!!!!")
+		}
+		return ctx.Next()
+	})
 
-	app.Get("/healthcheck", func(ctx *fiber.Ctx) error {
-		return ctx.SendString("OK")
+	app.Static("/", "./public")
+	app.Get("/", func(ctx *fiber.Ctx) error {
+		return ctx.Render("index", fiber.Map{})
 	})
 
 	/* Repositories */
@@ -125,11 +140,10 @@ func NewRouter(opts *Options) *fiber.App {
 	//	}
 	//	return ctx.SendString("File upload successfully " + strings.Join(paths, ","))
 	//})
+	app.Get("/healthcheck", monitor.New(), pemMiddleware.CheckPermission("AUDIT"))
 
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
-
-	app.Static("/public/images", "./public/images")
 
 	client := v1.Group("/client")
 	{
@@ -151,6 +165,34 @@ func NewRouter(opts *Options) *fiber.App {
 				log.Println(err)
 				vErr := fiber.NewError(401, "Invalid or expired access token")
 				return ctx.Status(fiber.StatusUnauthorized).JSON(vErr)
+			},
+			SuccessHandler: func(ctx *fiber.Ctx) error {
+				//log.Println("userContext: ", ctx.UserContext())
+				msg := fiber.NewError(401, "Invalid or expired access token")
+				token, ok := ctx.Locals("user").(*jwt.Token)
+				if !ok {
+					log.Printf("Claims token failed")
+					return ctx.Status(fiber.StatusUnauthorized).JSON(msg)
+				}
+				uid, ok := ctx.Locals("user").(*jwt.Token).Claims.(jwt.MapClaims)["sub"].(string)
+				if !ok {
+					log.Printf("Claims token failed")
+					return ctx.Status(fiber.StatusUnauthorized).JSON(msg)
+				}
+
+				if userId, err := strconv.Atoi(uid); err == nil {
+					_, authErr := userRepo.GetUserAuthenticationByUserId(uint(userId), token.Raw)
+					if authErr != nil {
+						log.Printf("GetUserAuthenticationByUserId error: %v", authErr)
+						return ctx.Status(fiber.StatusUnauthorized).JSON(msg)
+					}
+				} else {
+					log.Printf("Claims token failed")
+					return ctx.Status(fiber.StatusUnauthorized).JSON(msg)
+				}
+
+				//Check Latest Token
+				return ctx.Next()
 			},
 		}))
 	}

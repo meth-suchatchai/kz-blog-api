@@ -8,7 +8,7 @@ import (
 )
 
 func (repo *defaultRepository) CreateRole(data *rpmodels.Role) *fiber.Error {
-	err := repo.db.CreateRole(&dbmodels.Role{
+	err := repo.orm.CreateRole(&dbmodels.Role{
 		Name:        data.Name,
 		Description: data.Description,
 	})

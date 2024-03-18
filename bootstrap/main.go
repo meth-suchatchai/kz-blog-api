@@ -63,12 +63,25 @@ func main() {
 	if err != nil {
 		log.Fatalf("error minio: %v", err)
 	}
-
-	bucketCli, err := kzobjectstorage.NewSelectBucket(cfg.Storage.Bucket, cfg.Storage.Endpoint, cfg.Storage.Region, msc.Minio())
-	if err != nil {
-		log.Fatalf("error choose bucket size: %v", err)
+	var isMinioConnected = false
+	var bucketCli kzobjectstorage.StorageBucket
+	if msc != nil {
+		isMinioConnected = true
 	}
-	log.Println(bucketCli)
+
+	go func() {
+		for {
+			if isMinioConnected {
+				break
+			}
+			time.Sleep(time.Minute)
+			bucketCli, bucketErr := kzobjectstorage.NewSelectBucket(cfg.Storage.Bucket, cfg.Storage.Endpoint, cfg.Storage.Region, msc.Minio())
+			if bucketErr != nil {
+				log.Fatalf("error choose bucket size: %v", bucketErr)
+			}
+			log.Println(bucketCli)
+		}
+	}()
 
 	redisCli := redis.NewClient(&redis.Options{
 		Addr:     cfg.Redis.Address,
@@ -91,10 +104,10 @@ func main() {
 
 	lineCli := kzline.NewLineNotification(cfg.Line.BotApi, cfg.Line.LineApi, cfg.Line.AccessToken, rc)
 	log.Println(lineCli.GetApiStatus())
-	log.Println(lineCli.PushMessage(kzline.PushMessageRequest{
-		Message:              "Test",
-		NotificationDisabled: false,
-	}))
+	//log.Println(lineCli.PushMessage(kzline.PushMessageRequest{
+	//	Message:              "Test",
+	//	NotificationDisabled: false,
+	//}))
 
 	app := router.NewRouter(&router.Options{
 		Env:             cfg,

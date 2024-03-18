@@ -3,11 +3,11 @@ package userrepositories
 import "github.com/kuroshibaz/lib/gormdb"
 
 type defaultRepository struct {
-	cli *gormdb.DB
+	orm gormdb.Client
 }
 
-func NewRepository(cli *gormdb.DB) Repository {
+func NewRepository(orm gormdb.Client) Repository {
 	return &defaultRepository{
-		cli,
+		orm: orm,
 	}
 }

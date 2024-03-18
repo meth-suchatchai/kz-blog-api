@@ -13,11 +13,11 @@ type Permission interface {
 }
 
 type defaultPermission struct {
-	orm *gormdb.DB
+	orm gormdb.Client
 }
 
-func NewPermission(db *gormdb.DB) Permission {
-	return &defaultPermission{orm: db}
+func NewPermission(orm gormdb.Client) Permission {
+	return &defaultPermission{orm: orm}
 }
 
 func (pm *defaultPermission) CheckPermission(permission string) fiber.Handler {

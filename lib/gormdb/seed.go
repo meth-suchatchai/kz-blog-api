@@ -5,7 +5,7 @@ import (
 	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
 )
 
-func (c *DB) Seed() {
+func (c *defaultClient) Seed() {
 	tx := c.orm.Create(&dbmodels.Role{
 		Name:        "Admin",
 		Description: "full access control",

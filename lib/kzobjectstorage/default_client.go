@@ -37,7 +37,8 @@ func NewClient(opts *Options) (StorageMinio, error) {
 	})
 
 	if err != nil {
-		return nil, err
+		log.Warn(err)
+		return nil, nil
 	}
 
 	return &defaultClient{opts: opts, minioClient: minioClient}, nil

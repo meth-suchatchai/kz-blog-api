@@ -8,7 +8,7 @@ import (
 )
 
 func (repo *defaultRepository) CreateUser(data *dbmodels.User) (*usermodels.User, *fiber.Error) {
-	user, err := repo.cli.CreateUser(data)
+	user, err := repo.orm.CreateUser(data)
 	if err != nil {
 		return nil, fiber.NewError(errors.ErrCodeInternalServer, err.Error())
 	}

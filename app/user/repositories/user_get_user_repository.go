@@ -7,7 +7,7 @@ import (
 )
 
 func (repo *defaultRepository) GetUser(id int64) (*usermodels.User, *fiber.Error) {
-	user, err := repo.cli.GetUser(uint(id))
+	user, err := repo.orm.GetUser(uint(id))
 	if err != nil {
 		return nil, fiber.NewError(errors.ErrCodeInternalServer, err.Error())
 	}

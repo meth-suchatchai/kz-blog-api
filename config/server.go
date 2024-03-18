@@ -5,4 +5,5 @@ type Server struct {
 	Port            int    `mapstructure:"PORT"`
 	ApplicationName string `mapstructure:"APPLICATION_NAME"`
 	Debug           bool   `mapstructure:"DEBUG"`
+	AccessToken     string `mapstructure:"ACCESS_TOKEN"`
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func (repo *defaultRepository) CreatePermission(data *rpmodels.Permission) *fiber.Error {
-	err := repo.db.CreatePermission(&dbmodels.Permission{
+	err := repo.orm.CreatePermission(&dbmodels.Permission{
 		Name:        data.Name,
 		Code:        data.Code,
 		Description: data.Description,
