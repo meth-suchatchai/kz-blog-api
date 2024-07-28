@@ -87,7 +87,8 @@ func NewRouter(opts *Options) *fiber.App {
 		AllowOrigins: "*",
 	}))
 	app.Use(func(ctx *fiber.Ctx) error {
-		token := ctx.Get("KZ_API", "")
+		token := ctx.Get("KZ-API", "")
+		//log.Printf("token: ", token, opts.Env.Server.AccessToken)
 		if token == "" || token != opts.Env.Server.AccessToken {
 			return ctx.Status(fiber.StatusForbidden).SendString("who are youuuuu!!!!")
 		}
