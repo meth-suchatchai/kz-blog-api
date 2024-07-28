@@ -32,7 +32,7 @@ func (c *defaultClient) PushMessage(request PushMessageRequest) (*PushMessageRes
 	response, err := c.restyClient.R().
 		SetHeaders(map[string]string{
 			"Authorization": c.getHeaderToken(),
-			"Content-Type":  "application/x-www-form-urlencoded",
+			"Content-Type":  "command/x-www-form-urlencoded",
 		}).
 		SetFormData(formData).
 		Post(url)

@@ -16,6 +16,7 @@ type Env struct {
 	Storage  `mapstructure:"STORAGE"`
 	Line     `mapstructure:"LINE"`
 	Kafka    `mapstructure:"KAFKA"`
+	ETCD     `mapstructure:"ETCD"`
 }
 
 func ReadConfig(path string) (*Env, error) {

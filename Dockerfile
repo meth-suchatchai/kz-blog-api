@@ -4,20 +4,20 @@ FROM golang:alpine AS builder
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Go application source code into the container
+# Copy the Go command source code into the container
 COPY . .
 
-# Build the Go application
+# Build the Go command
 RUN go build -o api ./bootstrap/*.go
 
 # Create a lightweight final image
 FROM alpine
 
-# Copy the compiled Go application from the builder stage
+# Copy the compiled Go command from the builder stage
 COPY --from=builder /app/api /usr/local/bin/api
 
-# Expose the port that the Go application listens on
+# Expose the port that the Go command listens on
 EXPOSE 8080
 
-# Run the Go application
+# Run the Go command
 CMD ["api"]

@@ -1,145 +1,61 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"github.com/go-resty/resty/v2"
+	"github.com/fatih/color"
+	"github.com/kuroshibaz/bootstrap/command"
 	"github.com/kuroshibaz/config"
-	"github.com/kuroshibaz/lib/gormdb"
-	kzjwt "github.com/kuroshibaz/lib/jwt"
-	"github.com/kuroshibaz/lib/kzline"
-	"github.com/kuroshibaz/lib/kzobjectstorage"
-	"github.com/kuroshibaz/lib/taximail"
-	"github.com/kuroshibaz/lib/totp"
-	"github.com/kuroshibaz/router"
-	"github.com/redis/go-redis/v9"
-	clientv3 "go.etcd.io/etcd/client/v3"
+	"github.com/urfave/cli/v2"
 	"log"
 	"os"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 func main() {
 	cfg := loadConfig()
-	/* Initialize Database */
-	db, err := gormdb.ConnectSQL(&cfg.Database)
-	if err != nil {
-		log.Fatalf("error connect SQL: %v", err)
+
+	app := cli.NewApp()
+	app.Name = cfg.Server.ApplicationName
+	app.Usage = "command line interface"
+
+	app.Commands = []*cli.Command{
+		{
+			Name:    "command",
+			Aliases: []string{"start", "serve", "s"},
+			Usage:   fmt.Sprintf("start %s service", cfg.Server.ApplicationName),
+			Action: func(context *cli.Context) error {
+				command.Server(cfg)
+				fmt.Printf("[%s] Server Shutdown", color.YellowString("INFO"))
+				return nil
+			},
+		},
+		{
+			Name:  "seed",
+			Usage: fmt.Sprintf("run seed"),
+			Action: func(context *cli.Context) error {
+				fmt.Printf("[%s] Seed data proceeded", color.YellowString("INFO"))
+				command.Seed(cfg)
+				fmt.Printf("[%s] Seed data has successfully", color.GreenString("COMPLETED"))
+				return nil
+			},
+		},
+		{
+			Name:    "generate",
+			Aliases: []string{"g"},
+			Usage:   fmt.Sprintf("generate..."),
+			Action: func(context *cli.Context) error {
+				return nil
+			},
+		},
 	}
 
-	err = db.Migrate()
-	//db.Seed()
-	if err != nil {
-		log.Fatalf("error migrate: %v", err)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+		os.Exit(1)
 	}
+}
 
-	rc := resty.New()
-	taxiMailService, err := taximail.New(&taximail.Provide{
-		ApiKey:      cfg.TaxiMail.ApiKey,
-		SecretKey:   cfg.TaxiMail.SecretKey,
-		URL:         cfg.TaxiMail.URL,
-		SMSTemplate: cfg.TaxiMail.SMSTemplate,
-	}, rc)
+func runSeed() {
 
-	etcdCli, err := clientv3.New(clientv3.Config{
-		Endpoints:   []string{"localhost:2379"},
-		DialTimeout: 5 * time.Second,
-	})
-	if err != nil {
-		log.Fatalf("error etcd: %v", err)
-	}
-	log.Println(etcdCli.Endpoints())
-	defer etcdCli.Close()
-
-	msc, err := kzobjectstorage.NewClient(&kzobjectstorage.Options{
-		Endpoint:        cfg.Storage.Endpoint,
-		AccessKeyId:     cfg.Storage.AccessKeyId,
-		SecretAccessKey: cfg.Storage.SecretKey,
-		UseSSL:          false,
-		Region:          cfg.Storage.Region,
-	})
-	if err != nil {
-		log.Fatalf("error minio: %v", err)
-	}
-	var isMinioConnected = false
-	var bucketCli kzobjectstorage.StorageBucket
-	if msc != nil {
-		isMinioConnected = true
-	}
-
-	go func() {
-		for {
-			if isMinioConnected {
-				break
-			}
-			time.Sleep(time.Minute)
-			bucketCli, bucketErr := kzobjectstorage.NewSelectBucket(cfg.Storage.Bucket, cfg.Storage.Endpoint, cfg.Storage.Region, msc.Minio())
-			if bucketErr != nil {
-				log.Fatalf("error choose bucket size: %v", bucketErr)
-			}
-			log.Println(bucketCli)
-		}
-	}()
-
-	redisCli := redis.NewClient(&redis.Options{
-		Addr:     cfg.Redis.Address,
-		Password: cfg.Redis.Password,
-	})
-	err = redisCli.Ping(context.TODO()).Err()
-	if err != nil {
-		log.Fatalf("redis connection failed: %v", err)
-	}
-
-	totpcli := totp.New(totp.Config{AppName: cfg.Server.ApplicationName})
-
-	kzjwt := kzjwt.New(&config.JWT{
-		Secret:        cfg.JWT.Secret,
-		Issuer:        cfg.JWT.Issuer,
-		Domain:        cfg.JWT.Domain,
-		Expire:        cfg.JWT.Expire,
-		RefreshExpire: cfg.JWT.RefreshExpire,
-	})
-
-	lineCli := kzline.NewLineNotification(cfg.Line.BotApi, cfg.Line.LineApi, cfg.Line.AccessToken, rc)
-	log.Println(lineCli.GetApiStatus())
-	//log.Println(lineCli.PushMessage(kzline.PushMessageRequest{
-	//	Message:              "Test",
-	//	NotificationDisabled: false,
-	//}))
-
-	app := router.NewRouter(&router.Options{
-		Env:             cfg,
-		Db:              db,
-		Rc:              rc,
-		TaximailService: taxiMailService,
-		EtcdClient:      etcdCli,
-		TOtp:            totpcli,
-		Jwt:             kzjwt,
-		Redis:           redisCli,
-		StorageService:  bucketCli,
-		LineService:     lineCli,
-	})
-
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-	ctx, cancel := context.WithCancel(context.Background())
-	go func() {
-		<-quit
-		log.Println("Graceful Shutdown...")
-		cancel()
-	}()
-
-	/* Running Application */
-	go func() {
-		if err := app.Listen(fmt.Sprintf(":%d", cfg.Server.Port)); err != nil {
-			log.Fatalf("can't start application %v", err)
-			cancel()
-		}
-	}()
-	<-ctx.Done()
 }
 
 /* loadConfig read/map to environment config */

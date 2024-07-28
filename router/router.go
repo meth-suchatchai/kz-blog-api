@@ -24,6 +24,7 @@ import (
 	userrepositories "github.com/kuroshibaz/app/user/repositories"
 	userservices "github.com/kuroshibaz/app/user/services"
 	"github.com/kuroshibaz/config"
+	constant "github.com/kuroshibaz/const"
 	"github.com/kuroshibaz/lib/gormdb"
 	kzjwt "github.com/kuroshibaz/lib/jwt"
 	"github.com/kuroshibaz/lib/kzline"
@@ -59,6 +60,28 @@ func NewRouter(opts *Options) *fiber.App {
 	cv := validator.CustomValidator{Validator: validator.Validate}
 	viewEngine := html.New("views", ".html")
 
+	/* Repositories */
+	userRepo := userrepositories.NewRepository(opts.Db)
+	roleRepo := rprepositories.NewRepository(opts.Db)
+	blogRepo := blogrepositories.NewRepository(opts.Db)
+	fileRepo := filerepositories.NewRepository(opts.StorageService)
+
+	/* Services */
+	userService := userservices.NewService(userRepo)
+	roleService := rpservices.NewService(roleRepo)
+	blogService := blogservices.NewService(blogRepo)
+
+	etcdService := etcdservices.NewService(opts.EtcdClient)
+	fileService := fileservices.NewService(fileRepo)
+	clientService := clientservices.NewService(userRepo, blogRepo, opts.Jwt, opts.TaximailService, opts.Redis)
+
+	userHandler := userhandlers.NewHandler(cv, userService)
+	roleHandler := rphandlers.NewHandler(cv, roleService)
+	cliHandler := clienthandlers.NewHandler(cv, userService, blogService, etcdService, clientService, opts.Jwt)
+	blogHandler := bloghandlers.NewHandler(cv, blogService, fileService)
+
+	pemMiddleware := NewPermission(opts.Db)
+
 	app := fiber.New(fiber.Config{
 		AppName: "kz-blog",
 		ErrorHandler: func(ctx *fiber.Ctx, err error) error {
@@ -87,9 +110,19 @@ func NewRouter(opts *Options) *fiber.App {
 		AllowOrigins: "*",
 	}))
 	app.Use(func(ctx *fiber.Ctx) error {
-		token := ctx.Get("KZ_API", "")
+		token := ctx.Get("KZ-API", "")
+		//log.Printf("token: ", token, opts.Env.Server.AccessToken)
 		if token == "" || token != opts.Env.Server.AccessToken {
 			return ctx.Status(fiber.StatusForbidden).SendString("who are youuuuu!!!!")
+		}
+		return ctx.Next()
+	})
+
+	app.Use(func(ctx *fiber.Ctx) error {
+		isMaintenance := false
+		_ = etcdService.GetDataByKey(constant.MaintenanceStage, &isMaintenance)
+		if isMaintenance {
+			return ctx.Status(fiber.StatusForbidden).SendString("is undermaintain!")
 		}
 		return ctx.Next()
 	})
@@ -98,28 +131,6 @@ func NewRouter(opts *Options) *fiber.App {
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Render("index", fiber.Map{})
 	})
-
-	/* Repositories */
-	userRepo := userrepositories.NewRepository(opts.Db)
-	roleRepo := rprepositories.NewRepository(opts.Db)
-	blogRepo := blogrepositories.NewRepository(opts.Db)
-	fileRepo := filerepositories.NewRepository(opts.StorageService)
-
-	/* Services */
-	userService := userservices.NewService(userRepo)
-	roleService := rpservices.NewService(roleRepo)
-	blogService := blogservices.NewService(blogRepo)
-
-	etcdService := etcdservices.NewService(opts.EtcdClient)
-	fileService := fileservices.NewService(fileRepo)
-	clientService := clientservices.NewService(userRepo, blogRepo, opts.Jwt, opts.TaximailService, opts.Redis)
-
-	userHandler := userhandlers.NewHandler(cv, userService)
-	roleHandler := rphandlers.NewHandler(cv, roleService)
-	cliHandler := clienthandlers.NewHandler(cv, userService, blogService, etcdService, clientService, opts.Jwt)
-	blogHandler := bloghandlers.NewHandler(cv, blogService, fileService)
-
-	pemMiddleware := NewPermission(opts.Db)
 
 	//app.Post("/upload-test", func(ctx *fiber.Ctx) error {
 	//	form, err := ctx.MultipartForm()
@@ -140,7 +151,10 @@ func NewRouter(opts *Options) *fiber.App {
 	//	}
 	//	return ctx.SendString("File upload successfully " + strings.Join(paths, ","))
 	//})
-	app.Get("/healthcheck", monitor.New(), pemMiddleware.CheckPermission("AUDIT"))
+	app.Get("/healthcheck", func(ctx *fiber.Ctx) error {
+		return ctx.Status(fiber.StatusOK).SendString("success")
+	})
+	app.Get("/metrics", monitor.New(), pemMiddleware.CheckPermission("AUDIT"))
 
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
