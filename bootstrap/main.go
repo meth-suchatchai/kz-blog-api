@@ -54,8 +54,8 @@ func main() {
 	}
 }
 
-func runSeed() {
-
+func runServer(cfg *config.Env) {
+	command.Server(cfg)
 }
 
 /* loadConfig read/map to environment config */

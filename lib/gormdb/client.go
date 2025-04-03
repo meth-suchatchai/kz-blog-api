@@ -36,7 +36,7 @@ type Client interface {
 	ListUser() ([]dbmodels.User, error)
 	GetUser(id uint) (*dbmodels.User, error)
 	DeleteUser(id uint) bool
-	GetUserByMobileNumber(mobileNumber, countryCode string) (*dbmodels.User, error)
+	GetUserByMobileNumber(mobileNumber string) (*dbmodels.User, error)
 	CreateUser(data *dbmodels.User) (*dbmodels.User, error)
 	UpdateUser() bool
 	UpdateTFAColumn(enabled bool) error

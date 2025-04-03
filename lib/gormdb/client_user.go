@@ -41,10 +41,9 @@ func (c *defaultClient) DeleteUser(id uint) bool {
 	return true
 }
 
-func (c *defaultClient) GetUserByMobileNumber(mobileNumber, countryCode string) (*dbmodels.User, error) {
+func (c *defaultClient) GetUserByMobileNumber(mobileNumber string) (*dbmodels.User, error) {
 	var user = &dbmodels.User{}
-	log.Info("DB - GetUserByMobileNumber: ", mobileNumber, countryCode)
-	exec := c.orm.Where("mobile_number = ? AND country_code = ?", mobileNumber, countryCode).First(&user)
+	exec := c.orm.Where("mobile_number = ?", mobileNumber).First(&user)
 	if exec.Error != nil {
 		log.Errorf("get user failed: %v", exec.Error)
 		return nil, exec.Error

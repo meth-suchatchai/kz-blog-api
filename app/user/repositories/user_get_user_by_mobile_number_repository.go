@@ -7,7 +7,7 @@ import (
 )
 
 func (repo *defaultRepository) GetUserByMobileNumber(mobileNumber, countryCode string) (*usermodels.User, *fiber.Error) {
-	user, err := repo.orm.GetUserByMobileNumber(mobileNumber, countryCode)
+	user, err := repo.orm.GetUserByMobileNumber(mobileNumber)
 	if err != nil {
 		return nil, fiber.NewError(errors.ErrCodeInternalServer, err.Error())
 	}
