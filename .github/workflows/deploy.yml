@@ -58,7 +58,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t registry.digitalocean.com/kuroshibaz/kuroshibaz-api:1.0.0
+          docker build -t registry.digitalocean.com/kuroshibaz/kuroshibaz-api:1.0.0 .
 
       - name: Push Docker image to DigitalOcean Container Registry
         run: |
