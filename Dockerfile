@@ -1,5 +1,5 @@
 # Use a minimal base image for Go applications
-FROM golang:alpine AS builder
+FROM golang:1.20 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -7,17 +7,22 @@ WORKDIR /app
 # Copy the Go command source code into the container
 COPY . .
 
+# download dependecies
+RUN go mod tidy
+
 # Build the Go command
-RUN go build -o api ./bootstrap/*.go
+RUN go build -o kz_api-linux-x64 ./bootstrap/*.go
 
 # Create a lightweight final image
 FROM alpine
 
+WORKDIR /app
+
 # Copy the compiled Go command from the builder stage
-COPY --from=builder /app/api /usr/local/bin/api
+COPY --from=builder /app .
 
 # Expose the port that the Go command listens on
-EXPOSE 8080
+EXPOSE 3100
 
 # Run the Go command
-CMD ["api"]
+CMD ["./kz_api-linux-x64"]
