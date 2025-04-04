@@ -38,7 +38,7 @@ jobs:
 
       - name: Build the Go App
         run: |
-          go build -o kz_api-linux-x64 ./boostrap/*.go
+          go build -o kz_api-linux-x64 boostrap/*.go
           
 
   docker_build:
