@@ -11,18 +11,24 @@ COPY . .
 RUN go mod tidy
 
 # Build the Go command
-RUN go build -o kz_api-linux-x64 ./bootstrap/*.go
+RUN GOOS=linux GOARCH=amd64 go build -o kz_api-linux-x64 ./bootstrap/*.go
 
 # Create a lightweight final image
 FROM alpine
 
+# Install tzdata package to manage timezones
+RUN apk --no-cache add tzdata
+
+# Set the timezone (for example, Asia/Bangkok)
+ENV TZ=Asia/Bangkok
+
 WORKDIR /app
 
 # Copy the compiled Go command from the builder stage
-COPY --from=builder /app .
+COPY --from=builder /app/kz_api-linux-x64 /app
 
 # Expose the port that the Go command listens on
 EXPOSE 3100
 
 # Run the Go command
-CMD ["./kz_api-linux-x64"]
+CMD ["./kz_api-linux-x64", "start"]
