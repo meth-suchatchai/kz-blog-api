@@ -18,8 +18,8 @@ type defaultService struct {
 	rdc            *redis.Client
 }
 
-func NewService(userRepository userrepositories.Repository, blogRepository blogrepositories.Repository, jwt kzjwt.AuthJWT, mail taximail.Client, rdc *redis.Client) Service {
-	return &defaultService{userRepository: userRepository, blogRepository: blogRepository, auth: jwt, mail: mail, rdc: rdc}
+func NewService(userRepository userrepositories.Repository, blogRepository blogrepositories.Repository, jwt kzjwt.AuthJWT, rdc *redis.Client) Service {
+	return &defaultService{userRepository: userRepository, blogRepository: blogRepository, auth: jwt, rdc: rdc}
 }
 
 func (svc *defaultService) encryptedHash(data string) string {

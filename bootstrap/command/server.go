@@ -7,12 +7,11 @@ import (
 	"github.com/meth-suchatchai/kz-blog-api/config"
 	"github.com/meth-suchatchai/kz-blog-api/lib/gormdb"
 	kzjwt "github.com/meth-suchatchai/kz-blog-api/lib/jwt"
-	"github.com/meth-suchatchai/kz-blog-api/lib/kzline"
 	"github.com/meth-suchatchai/kz-blog-api/lib/kzobjectstorage"
-	"github.com/meth-suchatchai/kz-blog-api/lib/taximail"
 	"github.com/meth-suchatchai/kz-blog-api/lib/totp"
 	"github.com/meth-suchatchai/kz-blog-api/router"
 	"github.com/redis/go-redis/v9"
+	"github.com/sirupsen/logrus"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"log"
 	"os"
@@ -35,16 +34,22 @@ func Server(cfg *config.Env) {
 	}
 
 	rc := resty.New()
-	taxiMailService, err := taximail.New(&taximail.Provide{
-		ApiKey:      cfg.TaxiMail.ApiKey,
-		SecretKey:   cfg.TaxiMail.SecretKey,
-		URL:         cfg.TaxiMail.URL,
-		SMSTemplate: cfg.TaxiMail.SMSTemplate,
-	}, rc)
+	//taxiMailService, err := taximail.New(&taximail.Provide{
+	//	ApiKey:      cfg.TaxiMail.ApiKey,
+	//	SecretKey:   cfg.TaxiMail.SecretKey,
+	//	URL:         cfg.TaxiMail.URL,
+	//	SMSTemplate: cfg.TaxiMail.SMSTemplate,
+	//}, rc)
+	logger := logrus.New()
+	logger.SetFormatter(&logrus.JSONFormatter{})
+	logger.SetOutput(os.Stdout)
 
 	etcdCli, err := clientv3.New(clientv3.Config{
-		Endpoints:   []string{cfg.ETCD.Hostname},
+		Endpoints:   cfg.ETCD.Hostname,
 		DialTimeout: time.Duration(cfg.ETCD.Timeout) * time.Second,
+		Username:    cfg.ETCD.Username,
+		Password:    cfg.ETCD.Password,
+		TLS:         nil,
 	})
 	if err != nil {
 		log.Fatalf("error etcd: %v", err)
@@ -56,7 +61,7 @@ func Server(cfg *config.Env) {
 		Endpoint:        cfg.Storage.Endpoint,
 		AccessKeyId:     cfg.Storage.AccessKeyId,
 		SecretAccessKey: cfg.Storage.SecretKey,
-		UseSSL:          false,
+		UseSSL:          cfg.Storage.EnableSSL,
 		Region:          cfg.Storage.Region,
 	})
 	if err != nil {
@@ -101,23 +106,22 @@ func Server(cfg *config.Env) {
 		RefreshExpire: cfg.JWT.RefreshExpire,
 	})
 
-	lineCli := kzline.NewLineNotification(cfg.Line.BotApi, cfg.Line.LineApi, cfg.Line.AccessToken, rc)
+	//lineCli := kzline.NewLineNotification(cfg.Line.BotApi, cfg.Line.LineApi, cfg.Line.AccessToken, rc)
 	//log.Println(lineCli.PushMessage(kzline.PushMessageRequest{
 	//	Message:              "Test",
 	//	NotificationDisabled: false,
 	//}))
 
 	app := router.NewRouter(&router.Options{
-		Env:             cfg,
-		Db:              db,
-		Rc:              rc,
-		TaximailService: taxiMailService,
-		EtcdClient:      etcdCli,
-		TOtp:            totpcli,
-		Jwt:             kzjwt,
-		Redis:           redisCli,
-		StorageService:  bucketCli,
-		LineService:     lineCli,
+		Env:            cfg,
+		Log:            logger,
+		Db:             db,
+		Rc:             rc,
+		EtcdClient:     etcdCli,
+		TOtp:           totpcli,
+		Jwt:            kzjwt,
+		Redis:          redisCli,
+		StorageService: bucketCli,
 	})
 
 	quit := make(chan os.Signal, 1)

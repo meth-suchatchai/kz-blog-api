@@ -11,12 +11,12 @@ type Env struct {
 	Database `mapstructure:"DATABASE"`
 	Redis    `mapstructure:"REDIS"`
 	Server   `mapstructure:"SERVER"`
-	TaxiMail `mapstructure:"TAXIMAIL"`
 	JWT      `mapstructure:"JWT"`
 	Storage  `mapstructure:"STORAGE"`
-	Line     `mapstructure:"LINE"`
-	Kafka    `mapstructure:"KAFKA"`
 	ETCD     `mapstructure:"ETCD"`
+	//Line    `mapstructure:"LINE"`
+	//Kafka    `mapstructure:"KAFKA"`
+	//TaxiMail `mapstructure:"TAXIMAIL"`
 }
 
 func ReadConfig(path string) (*Env, error) {

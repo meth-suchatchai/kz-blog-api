@@ -1,7 +1,6 @@
 package router
 
 import (
-	"github.com/go-resty/resty/v2"
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -23,34 +22,12 @@ import (
 	userhandlers "github.com/meth-suchatchai/kz-blog-api/app/user/handlers"
 	userrepositories "github.com/meth-suchatchai/kz-blog-api/app/user/repositories"
 	userservices "github.com/meth-suchatchai/kz-blog-api/app/user/services"
-	"github.com/meth-suchatchai/kz-blog-api/config"
 	constant "github.com/meth-suchatchai/kz-blog-api/const"
-	"github.com/meth-suchatchai/kz-blog-api/lib/gormdb"
-	kzjwt "github.com/meth-suchatchai/kz-blog-api/lib/jwt"
-	"github.com/meth-suchatchai/kz-blog-api/lib/kzline"
-	"github.com/meth-suchatchai/kz-blog-api/lib/kzobjectstorage"
-	"github.com/meth-suchatchai/kz-blog-api/lib/taximail"
-	"github.com/meth-suchatchai/kz-blog-api/lib/totp"
 	"github.com/meth-suchatchai/kz-blog-api/lib/validator"
 	"github.com/pkg/errors"
-	"github.com/redis/go-redis/v9"
-	clientv3 "go.etcd.io/etcd/client/v3"
 	"log"
 	"strconv"
 )
-
-type Options struct {
-	Env             *config.Env
-	Db              gormdb.Client
-	Rc              *resty.Client
-	TaximailService taximail.Client
-	EtcdClient      *clientv3.Client
-	TOtp            totp.Client
-	Jwt             kzjwt.AuthJWT
-	Redis           *redis.Client
-	StorageService  kzobjectstorage.StorageBucket
-	LineService     kzline.LineNotification
-}
 
 func NewRouter(opts *Options) *fiber.App {
 	if opts == nil {
@@ -73,7 +50,7 @@ func NewRouter(opts *Options) *fiber.App {
 
 	etcdService := etcdservices.NewService(opts.EtcdClient)
 	fileService := fileservices.NewService(fileRepo)
-	clientService := clientservices.NewService(userRepo, blogRepo, opts.Jwt, opts.TaximailService, opts.Redis)
+	clientService := clientservices.NewService(userRepo, blogRepo, opts.Jwt, opts.Redis)
 
 	userHandler := userhandlers.NewHandler(cv, userService)
 	roleHandler := rphandlers.NewHandler(cv, roleService)
@@ -81,6 +58,10 @@ func NewRouter(opts *Options) *fiber.App {
 	blogHandler := bloghandlers.NewHandler(cv, blogService, fileService)
 
 	pemMiddleware := NewPermission(opts.Db)
+
+	//appz := kuroctxfiber.New(kuroctxfiber.Config{
+	//	Name: "kz-blog-api",
+	//})
 
 	app := fiber.New(fiber.Config{
 		AppName: "kz-blog",
