@@ -3,7 +3,7 @@ package etcdservices
 import (
 	"context"
 	"github.com/gofiber/fiber/v2"
-	"github.com/kuroshibaz/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 func (s *defaultService) GetDataStringByKey(key string) (string, *fiber.Error) {

@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	clientmodels "github.com/kuroshibaz/app/client/models"
-	constant "github.com/kuroshibaz/const"
-	"github.com/kuroshibaz/lib/errors"
-	"github.com/kuroshibaz/lib/taximail"
+	clientmodels "github.com/meth-suchatchai/kz-blog-api/app/client/models"
+	constant "github.com/meth-suchatchai/kz-blog-api/const"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/taximail"
 )
 
 func (svc *defaultService) VerifyOTP(data clientmodels.VerifyOTPData) *fiber.Error {

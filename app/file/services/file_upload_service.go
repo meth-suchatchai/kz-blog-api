@@ -2,9 +2,9 @@ package fileservices
 
 import (
 	"github.com/gofiber/fiber/v2"
-	filemodels "github.com/kuroshibaz/app/file/models"
-	"github.com/kuroshibaz/lib/errors"
-	"github.com/kuroshibaz/lib/kzfile"
+	filemodels "github.com/meth-suchatchai/kz-blog-api/app/file/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/kzfile"
 	"io"
 	"os"
 

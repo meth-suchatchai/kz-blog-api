@@ -3,9 +3,9 @@ package bloghandlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	blogmodels "github.com/kuroshibaz/app/blog/models"
-	constant "github.com/kuroshibaz/const"
-	coremodels "github.com/kuroshibaz/models"
+	blogmodels "github.com/meth-suchatchai/kz-blog-api/app/blog/models"
+	constant "github.com/meth-suchatchai/kz-blog-api/const"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 )
 
 func (h *defaultHandler) CreateBlog(ctx *fiber.Ctx) error {

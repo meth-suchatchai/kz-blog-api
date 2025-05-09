@@ -2,8 +2,8 @@ package userrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/kuroshibaz/lib/errors"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
 )
 
 func (repo *defaultRepository) GetListUser() ([]dbmodels.User, *fiber.Error) {

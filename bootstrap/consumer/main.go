@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/kuroshibaz/config"
+	"github.com/meth-suchatchai/kz-blog-api/config"
 	"log"
 )
 

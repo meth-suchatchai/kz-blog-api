@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/fatih/color"
-	"github.com/kuroshibaz/bootstrap/command"
-	"github.com/kuroshibaz/config"
+	"github.com/meth-suchatchai/kz-blog-api/bootstrap/command"
+	"github.com/meth-suchatchai/kz-blog-api/config"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"

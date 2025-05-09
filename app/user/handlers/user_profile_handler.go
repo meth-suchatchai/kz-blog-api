@@ -3,9 +3,9 @@ package userhandlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
-	usermodels "github.com/kuroshibaz/app/user/models"
-	"github.com/kuroshibaz/lib/errors"
-	coremodels "github.com/kuroshibaz/models"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 	"strconv"
 )
 

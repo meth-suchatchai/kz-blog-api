@@ -2,8 +2,8 @@ package command
 
 import (
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/kuroshibaz/config"
-	"github.com/kuroshibaz/lib/gormdb"
+	"github.com/meth-suchatchai/kz-blog-api/config"
+	"github.com/meth-suchatchai/kz-blog-api/lib/gormdb"
 )
 
 func Seed(cfg *config.Env) {

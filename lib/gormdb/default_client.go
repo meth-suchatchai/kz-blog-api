@@ -2,7 +2,7 @@ package gormdb
 
 import (
 	"fmt"
-	"github.com/kuroshibaz/config"
+	"github.com/meth-suchatchai/kz-blog-api/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

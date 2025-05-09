@@ -1,4 +1,4 @@
-module github.com/kuroshibaz
+module github.com/meth-suchatchai/kz-blog-api
 
 go 1.20
 
@@ -10,7 +10,7 @@ require (
 	github.com/gofiber/contrib/jwt v1.0.4
 	github.com/gofiber/fiber/v2 v2.48.0
 	github.com/gofiber/template/html/v2 v2.1.1
-	github.com/golang-jwt/jwt/v5 v5.0.0
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/minio/minio-go/v7 v7.0.63
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pkg/errors v0.9.1
@@ -24,6 +24,7 @@ require (
 )
 
 require (
+	github.com/BossZaNaHub/kurojwt v0.0.0-20250428154215-fee06cdbde59 // indirect
 	github.com/MicahParks/keyfunc/v2 v2.1.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

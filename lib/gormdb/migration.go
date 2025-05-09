@@ -1,6 +1,6 @@
 package gormdb
 
-import dbmodels "github.com/kuroshibaz/lib/gormdb/models"
+import dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
 
 func (c *defaultClient) Migrate() error {
 	err := c.orm.AutoMigrate(&dbmodels.User{})

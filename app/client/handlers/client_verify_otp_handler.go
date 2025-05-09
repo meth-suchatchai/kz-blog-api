@@ -2,8 +2,8 @@ package clienthandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	clientmodels "github.com/kuroshibaz/app/client/models"
-	coremodels "github.com/kuroshibaz/models"
+	clientmodels "github.com/meth-suchatchai/kz-blog-api/app/client/models"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 )
 
 func (h *defaultHandler) VerifyOTP(ctx *fiber.Ctx) error {

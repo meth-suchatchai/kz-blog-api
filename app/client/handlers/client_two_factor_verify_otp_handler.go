@@ -2,7 +2,7 @@ package clienthandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	clientmodels "github.com/kuroshibaz/app/client/models"
+	clientmodels "github.com/meth-suchatchai/kz-blog-api/app/client/models"
 )
 
 func (h *defaultHandler) TwoFactorVerifyOtp(ctx *fiber.Ctx) error {

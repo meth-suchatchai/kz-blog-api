@@ -1,7 +1,7 @@
 package userservices
 
 import (
-	userrepositories "github.com/kuroshibaz/app/user/repositories"
+	userrepositories "github.com/meth-suchatchai/kz-blog-api/app/user/repositories"
 )
 
 type defaultService struct {

@@ -1,6 +1,6 @@
 package blogservices
 
-import blogrepositories "github.com/kuroshibaz/app/blog/repositories"
+import blogrepositories "github.com/meth-suchatchai/kz-blog-api/app/blog/repositories"
 
 type defaultService struct {
 	repo blogrepositories.Repository

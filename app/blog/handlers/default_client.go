@@ -1,9 +1,9 @@
 package bloghandlers
 
 import (
-	blogservices "github.com/kuroshibaz/app/blog/services"
-	fileservices "github.com/kuroshibaz/app/file/services"
-	"github.com/kuroshibaz/lib/validator"
+	blogservices "github.com/meth-suchatchai/kz-blog-api/app/blog/services"
+	fileservices "github.com/meth-suchatchai/kz-blog-api/app/file/services"
+	"github.com/meth-suchatchai/kz-blog-api/lib/validator"
 )
 
 type defaultHandler struct {

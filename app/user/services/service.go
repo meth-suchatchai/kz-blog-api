@@ -2,7 +2,7 @@ package userservices
 
 import (
 	"github.com/gofiber/fiber/v2"
-	usermodels "github.com/kuroshibaz/app/user/models"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
 )
 
 type Service interface {

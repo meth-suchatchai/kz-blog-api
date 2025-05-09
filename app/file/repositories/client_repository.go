@@ -2,7 +2,7 @@ package filerepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	filemodels "github.com/kuroshibaz/app/file/models"
+	filemodels "github.com/meth-suchatchai/kz-blog-api/app/file/models"
 )
 
 type Repository interface {

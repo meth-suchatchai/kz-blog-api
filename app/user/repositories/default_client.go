@@ -1,6 +1,6 @@
 package userrepositories
 
-import "github.com/kuroshibaz/lib/gormdb"
+import "github.com/meth-suchatchai/kz-blog-api/lib/gormdb"
 
 type defaultRepository struct {
 	orm gormdb.Client

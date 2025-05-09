@@ -2,8 +2,8 @@ package userrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	usermodels "github.com/kuroshibaz/app/user/models"
-	"github.com/kuroshibaz/lib/errors"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 func (repo *defaultRepository) GetUserByMobileNumber(mobileNumber, countryCode string) (*usermodels.User, *fiber.Error) {

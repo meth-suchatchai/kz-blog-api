@@ -3,10 +3,10 @@ package clientservices
 import (
 	"crypto/md5"
 	"encoding/hex"
-	blogrepositories "github.com/kuroshibaz/app/blog/repositories"
-	userrepositories "github.com/kuroshibaz/app/user/repositories"
-	kzjwt "github.com/kuroshibaz/lib/jwt"
-	"github.com/kuroshibaz/lib/taximail"
+	blogrepositories "github.com/meth-suchatchai/kz-blog-api/app/blog/repositories"
+	userrepositories "github.com/meth-suchatchai/kz-blog-api/app/user/repositories"
+	kzjwt "github.com/meth-suchatchai/kz-blog-api/lib/jwt"
+	"github.com/meth-suchatchai/kz-blog-api/lib/taximail"
 	"github.com/redis/go-redis/v9"
 )
 

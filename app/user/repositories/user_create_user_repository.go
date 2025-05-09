@@ -2,9 +2,9 @@ package userrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	usermodels "github.com/kuroshibaz/app/user/models"
-	"github.com/kuroshibaz/lib/errors"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
 )
 
 func (repo *defaultRepository) CreateUser(data *dbmodels.User) (*usermodels.User, *fiber.Error) {

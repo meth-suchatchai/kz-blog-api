@@ -2,9 +2,9 @@ package clienthandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	clientmodels "github.com/kuroshibaz/app/client/models"
-	"github.com/kuroshibaz/lib/errors"
-	coremodels "github.com/kuroshibaz/models"
+	clientmodels "github.com/meth-suchatchai/kz-blog-api/app/client/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 )
 
 func (h *defaultHandler) Login(ctx *fiber.Ctx) error {

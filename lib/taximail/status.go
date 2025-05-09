@@ -3,7 +3,7 @@ package taximail
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/kuroshibaz/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 func (c *defaultClient) Status() *fiber.Error {

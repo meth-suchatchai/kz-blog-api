@@ -3,8 +3,8 @@ package kzjwt
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	usermodels "github.com/kuroshibaz/app/user/models"
-	"github.com/kuroshibaz/lib/errors"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 	"time"
 )
 

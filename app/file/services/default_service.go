@@ -1,6 +1,6 @@
 package fileservices
 
-import filerepositories "github.com/kuroshibaz/app/file/repositories"
+import filerepositories "github.com/meth-suchatchai/kz-blog-api/app/file/repositories"
 
 type defaultService struct {
 	fileRepo filerepositories.Repository

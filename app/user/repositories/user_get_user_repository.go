@@ -2,8 +2,8 @@ package userrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	usermodels "github.com/kuroshibaz/app/user/models"
-	"github.com/kuroshibaz/lib/errors"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 func (repo *defaultRepository) GetUser(id int64) (*usermodels.User, *fiber.Error) {

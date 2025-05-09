@@ -2,7 +2,7 @@ package gormdb
 
 import (
 	"github.com/gofiber/fiber/v2/log"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
 	"gorm.io/gorm"
 )
 

@@ -3,7 +3,7 @@ package kzline
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kuroshibaz/lib/utils"
+	"github.com/meth-suchatchai/kz-blog-api/lib/utils"
 	"log"
 )
 

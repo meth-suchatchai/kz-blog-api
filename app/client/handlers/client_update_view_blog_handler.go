@@ -2,9 +2,9 @@ package clienthandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	constant "github.com/kuroshibaz/const"
-	"github.com/kuroshibaz/lib/errors"
-	coremodels "github.com/kuroshibaz/models"
+	constant "github.com/meth-suchatchai/kz-blog-api/const"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 )
 
 func (h *defaultHandler) UpdateViewBlog(ctx *fiber.Ctx) error {

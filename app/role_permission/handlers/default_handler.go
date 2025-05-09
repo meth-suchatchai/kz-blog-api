@@ -1,8 +1,8 @@
 package rphandlers
 
 import (
-	rpservices "github.com/kuroshibaz/app/role_permission/services"
-	"github.com/kuroshibaz/lib/validator"
+	rpservices "github.com/meth-suchatchai/kz-blog-api/app/role_permission/services"
+	"github.com/meth-suchatchai/kz-blog-api/lib/validator"
 )
 
 type defaultHandler struct {

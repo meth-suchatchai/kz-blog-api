@@ -3,7 +3,7 @@ package taximail
 import (
 	"encoding/json"
 	"github.com/gofiber/fiber/v2"
-	"github.com/kuroshibaz/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 type LoginRequest struct {

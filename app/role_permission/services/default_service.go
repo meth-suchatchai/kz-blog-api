@@ -1,6 +1,6 @@
 package rpservices
 
-import rprepositories "github.com/kuroshibaz/app/role_permission/repositories"
+import rprepositories "github.com/meth-suchatchai/kz-blog-api/app/role_permission/repositories"
 
 type defaultService struct {
 	rp rprepositories.Repository

@@ -3,10 +3,10 @@ package clientservices
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	clientmodels "github.com/kuroshibaz/app/client/models"
-	usermodels "github.com/kuroshibaz/app/user/models"
-	"github.com/kuroshibaz/lib/errors"
-	kzjwt "github.com/kuroshibaz/lib/jwt"
+	clientmodels "github.com/meth-suchatchai/kz-blog-api/app/client/models"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	kzjwt "github.com/meth-suchatchai/kz-blog-api/lib/jwt"
 )
 
 func (svc *defaultService) Login(data clientmodels.LoginData) (*usermodels.User, *kzjwt.AccessToken, *fiber.Error) {

@@ -3,8 +3,8 @@ package router
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/kuroshibaz/lib/errors"
-	"github.com/kuroshibaz/lib/gormdb"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/gormdb"
 	"strconv"
 )
 

@@ -1,6 +1,6 @@
 package filerepositories
 
-import "github.com/kuroshibaz/lib/kzobjectstorage"
+import "github.com/meth-suchatchai/kz-blog-api/lib/kzobjectstorage"
 
 type defaultRepository struct {
 	storageBucket kzobjectstorage.StorageBucket

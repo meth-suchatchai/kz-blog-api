@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/kuroshibaz/config"
+	"github.com/meth-suchatchai/kz-blog-api/config"
 	"time"
 )
 

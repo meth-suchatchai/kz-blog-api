@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	clientmodels "github.com/kuroshibaz/app/client/models"
-	constant "github.com/kuroshibaz/const"
-	"github.com/kuroshibaz/lib/errors"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
-	"github.com/kuroshibaz/lib/kzstring"
-	"github.com/kuroshibaz/lib/taximail"
+	clientmodels "github.com/meth-suchatchai/kz-blog-api/app/client/models"
+	constant "github.com/meth-suchatchai/kz-blog-api/const"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/kzstring"
+	"github.com/meth-suchatchai/kz-blog-api/lib/taximail"
 	"time"
 )
 

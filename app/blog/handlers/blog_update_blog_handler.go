@@ -2,7 +2,7 @@ package bloghandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	coremodels "github.com/kuroshibaz/models"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 )
 
 func (h *defaultHandler) UpdateBlog(ctx *fiber.Ctx) error {

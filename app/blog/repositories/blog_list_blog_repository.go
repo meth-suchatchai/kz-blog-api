@@ -3,8 +3,8 @@ package blogrepositories
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	blogmodels "github.com/kuroshibaz/app/blog/models"
-	"github.com/kuroshibaz/lib/errors"
+	blogmodels "github.com/meth-suchatchai/kz-blog-api/app/blog/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 func (repo *defaultRepository) ListBlog(paginate ...int) (*[]blogmodels.Blog, *fiber.Error) {

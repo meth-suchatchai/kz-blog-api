@@ -1,7 +1,7 @@
 package gormdb
 
 import (
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
 	"gorm.io/gorm"
 )
 

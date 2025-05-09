@@ -2,8 +2,8 @@ package gormdb
 
 import (
 	"github.com/gofiber/fiber/v2/log"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
-	"github.com/kuroshibaz/lib/utils"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/utils"
 )
 
 var createPermissions = []dbmodels.Permission{

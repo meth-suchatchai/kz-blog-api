@@ -1,8 +1,8 @@
 package userhandlers
 
 import (
-	userservices "github.com/kuroshibaz/app/user/services"
-	"github.com/kuroshibaz/lib/validator"
+	userservices "github.com/meth-suchatchai/kz-blog-api/app/user/services"
+	"github.com/meth-suchatchai/kz-blog-api/lib/validator"
 )
 
 type defaultHandler struct {

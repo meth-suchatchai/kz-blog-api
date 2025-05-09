@@ -2,10 +2,10 @@ package clienthandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	clientmodels "github.com/kuroshibaz/app/client/models"
-	constant "github.com/kuroshibaz/const"
-	"github.com/kuroshibaz/lib/errors"
-	coremodels "github.com/kuroshibaz/models"
+	clientmodels "github.com/meth-suchatchai/kz-blog-api/app/client/models"
+	constant "github.com/meth-suchatchai/kz-blog-api/const"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 )
 
 func (h *defaultHandler) GetBlog(ctx *fiber.Ctx) error {

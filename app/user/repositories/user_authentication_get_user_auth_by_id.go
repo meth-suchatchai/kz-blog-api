@@ -2,7 +2,7 @@ package userrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
 )
 
 func (repo *defaultRepository) GetUserAuthenticationByUserId(userId uint, token string) (*dbmodels.UserAuthentication, *fiber.Error) {

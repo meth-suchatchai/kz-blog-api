@@ -1,12 +1,12 @@
 package clienthandlers
 
 import (
-	blogservices "github.com/kuroshibaz/app/blog/services"
-	clientservices "github.com/kuroshibaz/app/client/services"
-	etcdservices "github.com/kuroshibaz/app/etcd/services"
-	"github.com/kuroshibaz/app/user/services"
-	kzjwt "github.com/kuroshibaz/lib/jwt"
-	"github.com/kuroshibaz/lib/validator"
+	blogservices "github.com/meth-suchatchai/kz-blog-api/app/blog/services"
+	clientservices "github.com/meth-suchatchai/kz-blog-api/app/client/services"
+	etcdservices "github.com/meth-suchatchai/kz-blog-api/app/etcd/services"
+	"github.com/meth-suchatchai/kz-blog-api/app/user/services"
+	kzjwt "github.com/meth-suchatchai/kz-blog-api/lib/jwt"
+	"github.com/meth-suchatchai/kz-blog-api/lib/validator"
 )
 
 type defaultHandler struct {

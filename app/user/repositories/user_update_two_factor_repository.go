@@ -2,7 +2,7 @@ package userrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/kuroshibaz/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 func (repo *defaultRepository) UpdateTwoFactor(enabled bool) *fiber.Error {

@@ -2,9 +2,9 @@ package blogrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	blogmodels "github.com/kuroshibaz/app/blog/models"
-	"github.com/kuroshibaz/lib/errors"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
+	blogmodels "github.com/meth-suchatchai/kz-blog-api/app/blog/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
 )
 
 func (repo *defaultRepository) CreateBlog(data *blogmodels.Blog) *fiber.Error {

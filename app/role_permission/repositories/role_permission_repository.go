@@ -2,8 +2,8 @@ package rprepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	rpmodels "github.com/kuroshibaz/app/role_permission/models"
-	"github.com/kuroshibaz/lib/errors"
+	rpmodels "github.com/meth-suchatchai/kz-blog-api/app/role_permission/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 )
 
 func (repo *defaultRepository) RolePermission() (*[]rpmodels.RolePermission, *fiber.Error) {

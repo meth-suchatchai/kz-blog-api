@@ -2,9 +2,9 @@ package bloghandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	blogmodels "github.com/kuroshibaz/app/blog/models"
-	"github.com/kuroshibaz/lib/errors"
-	coremodels "github.com/kuroshibaz/models"
+	blogmodels "github.com/meth-suchatchai/kz-blog-api/app/blog/models"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
+	coremodels "github.com/meth-suchatchai/kz-blog-api/models"
 )
 
 func (h *defaultHandler) DeleteBlog(ctx *fiber.Ctx) error {

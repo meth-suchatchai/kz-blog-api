@@ -3,7 +3,7 @@ package kzstring
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/kuroshibaz/lib/errors"
+	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 	"strconv"
 )
 

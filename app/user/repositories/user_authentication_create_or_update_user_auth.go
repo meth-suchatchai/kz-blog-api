@@ -2,9 +2,9 @@ package userrepositories
 
 import (
 	"github.com/gofiber/fiber/v2"
-	usermodels "github.com/kuroshibaz/app/user/models"
-	dbmodels "github.com/kuroshibaz/lib/gormdb/models"
-	kzjwt "github.com/kuroshibaz/lib/jwt"
+	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
+	dbmodels "github.com/meth-suchatchai/kz-blog-api/lib/gormdb/models"
+	kzjwt "github.com/meth-suchatchai/kz-blog-api/lib/jwt"
 	"gorm.io/gorm"
 )
 
