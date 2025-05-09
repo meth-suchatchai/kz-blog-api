@@ -61,11 +61,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.2 .
+          docker build -t registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.3 .
 
       - name: Push Docker image to DigitalOcean Container Registry
         run: |
-          docker push registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.2
+          docker push registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.3
 
   deploy:
     runs-on: ubuntu-latest
@@ -81,4 +81,4 @@ jobs:
           script: |
             echo "Deploying..."
             echo "${{ secrets.GITLAB_REGISTRY_PASSWORD }}" | docker login registry.gitlab.com -u "${{ secrets.GITLAB_REGISTRY_USERNAME }}" --password-stdin
-            docker pull registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.2
+            docker pull registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.3
