@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - '*'
     pull_request:
       branches:
         - master
@@ -63,7 +65,7 @@ jobs:
         run: |
           docker build -t registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.3 .
 
-      - name: Push Docker image to DigitalOcean Container Registry
+      - name: Push Docker image to Gitlab Container Registry
         run: |
           docker push registry.gitlab.com/kuroshibaz/kuroshibaz-api:1.0.3
 

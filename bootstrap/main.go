@@ -39,10 +39,15 @@ func main() {
 			},
 		},
 		{
-			Name:    "generate",
-			Aliases: []string{"g"},
+			Name:    "generate web secret",
+			Aliases: []string{"gws"},
 			Usage:   fmt.Sprintf("generate..."),
 			Action: func(context *cli.Context) error {
+				err := command.GenerateSecretKey(context)
+				if err != nil {
+					fmt.Printf("[%s] Generate secret key failed", color.RedString("ERROR"))
+				}
+
 				return nil
 			},
 		},
