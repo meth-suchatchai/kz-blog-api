@@ -16,7 +16,11 @@ func (h *defaultHandler) Login(ctx *fiber.Ctx) error {
 	user, auth, err := h.clientService.Login(req.LoginData)
 	if err != nil {
 		if err.Code == 203 {
-			return ctx.Status(fiber.StatusOK).JSON("")
+			return ctx.Status(fiber.StatusOK).JSON(coremodels.SuccessResponse{
+				Code:    err.Code,
+				Message: "2FA required",
+				Data:    nil,
+			})
 		}
 		return err
 	}

@@ -7,4 +7,5 @@ import (
 
 type Service interface {
 	UserProfile(userId int64) (*usermodels.User, *fiber.Error)
+	UserOtpToggle(data *usermodels.User, enabled bool) (string, *fiber.Error)
 }

@@ -25,9 +25,8 @@ func (c *defaultClient) GetUser(id uint) (*dbmodels.User, error) {
 	return &user, nil
 }
 
-func (c *defaultClient) UpdateUser() bool {
-	//c.orm.Updates()
-	return false
+func (c *defaultClient) UpdateUser(id uint, params map[string]interface{}) error {
+	return c.orm.Model(&dbmodels.User{}).Where("id = ?", id).Updates(params).Error
 }
 
 func (c *defaultClient) DeleteUser(id uint) bool {
@@ -62,9 +61,9 @@ func (c *defaultClient) CreateUser(data *dbmodels.User) (*dbmodels.User, error) 
 	return data, nil
 }
 
-func (c *defaultClient) UpdateTFAColumn(enabled bool) error {
-	var user dbmodels.User
-	err := c.orm.Model(&user).Update("two_factor_enabled", enabled).Error
+func (c *defaultClient) UpdateTFAColumn(id uint, secretKey string, enabled bool) error {
+	var user = dbmodels.User{Model: gorm.Model{ID: id}}
+	err := c.orm.Model(&user).Updates(dbmodels.User{TFEnable: enabled, TFCode: secretKey}).Error
 	if err != nil {
 		return err
 	}

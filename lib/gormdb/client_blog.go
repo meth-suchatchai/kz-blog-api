@@ -39,13 +39,13 @@ func (c *defaultClient) DeleteBlog(id uint) error {
 	return c.orm.Delete(blog).Error
 }
 
-func (c *defaultClient) UpdateBlog(data *dbmodels.Blog) error {
-	err := c.orm.Save(data).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (c *defaultClient) UpdateBlog(id uint, data map[string]interface{}) error {
+	//err := c.orm.Save(data).Error
+	//if err != nil {
+	//	return err
+	//}
+	var blog dbmodels.Blog
+	return c.orm.Model(&blog).Where("id = ?", id).Updates(data).Error
 }
 
 func (c *defaultClient) ListBlog(opts ...int) (*[]dbmodels.Blog, error) {

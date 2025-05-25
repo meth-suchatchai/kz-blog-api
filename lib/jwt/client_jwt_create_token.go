@@ -2,14 +2,12 @@ package kzjwt
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 	usermodels "github.com/meth-suchatchai/kz-blog-api/app/user/models"
 	"github.com/meth-suchatchai/kz-blog-api/lib/errors"
 	"time"
 )
 
 func (c *defaultClient) JwtCreateToken(data *usermodels.User) (*AccessToken, *fiber.Error) {
-	log.Info("config: ", c.cfg)
 	accessTokenExpireDate, accessTokenExpire := c.generateExpireTime(time.Minute * time.Duration(c.cfg.Expire))
 	refreshTokenExpireDate, refreshTokenExpire := c.generateExpireTime(time.Minute * time.Duration(c.cfg.RefreshExpire))
 

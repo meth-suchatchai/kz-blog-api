@@ -19,6 +19,9 @@ import (
 	rphandlers "github.com/meth-suchatchai/kz-blog-api/app/role_permission/handlers"
 	rprepositories "github.com/meth-suchatchai/kz-blog-api/app/role_permission/repositories"
 	rpservices "github.com/meth-suchatchai/kz-blog-api/app/role_permission/services"
+	scenehandlers "github.com/meth-suchatchai/kz-blog-api/app/scene/handlers"
+	scenerepositories "github.com/meth-suchatchai/kz-blog-api/app/scene/repositories"
+	sceneservices "github.com/meth-suchatchai/kz-blog-api/app/scene/services"
 	userhandlers "github.com/meth-suchatchai/kz-blog-api/app/user/handlers"
 	userrepositories "github.com/meth-suchatchai/kz-blog-api/app/user/repositories"
 	userservices "github.com/meth-suchatchai/kz-blog-api/app/user/services"
@@ -42,11 +45,13 @@ func NewRouter(opts *Options) *fiber.App {
 	roleRepo := rprepositories.NewRepository(opts.Db)
 	blogRepo := blogrepositories.NewRepository(opts.Db)
 	fileRepo := filerepositories.NewRepository(opts.StorageService)
+	sceneRepo := scenerepositories.NewRepository(opts.Db)
 
 	/* Services */
-	userService := userservices.NewService(userRepo)
+	userService := userservices.NewService(userRepo, opts.TOtp)
 	roleService := rpservices.NewService(roleRepo)
 	blogService := blogservices.NewService(blogRepo)
+	sceneService := sceneservices.NewService(sceneRepo)
 
 	etcdService := etcdservices.NewService(opts.EtcdClient)
 	fileService := fileservices.NewService(fileRepo)
@@ -56,6 +61,7 @@ func NewRouter(opts *Options) *fiber.App {
 	roleHandler := rphandlers.NewHandler(cv, roleService)
 	cliHandler := clienthandlers.NewHandler(cv, userService, blogService, etcdService, clientService, opts.Jwt)
 	blogHandler := bloghandlers.NewHandler(cv, blogService, fileService)
+	sceneHandler := scenehandlers.NewHandler(cv, sceneService)
 
 	pemMiddleware := NewPermission(opts.Db)
 
@@ -195,6 +201,7 @@ func NewRouter(opts *Options) *fiber.App {
 	user := crm.Group("/user")
 	{
 		user.Get("/profile", userHandler.Profile)
+		user.Put("/enabled_otp", userHandler.OTPEnabled)
 	}
 
 	role := crm.Group("/role")
@@ -216,6 +223,12 @@ func NewRouter(opts *Options) *fiber.App {
 		blog.Post("", pemMiddleware.CheckPermission("CREATE_BLOG"), blogHandler.CreateBlog)
 		blog.Put(":id", pemMiddleware.CheckPermission("UPDATE_BLOG"), blogHandler.UpdateBlog)
 		blog.Delete(":id", pemMiddleware.CheckPermission("DELETE_BLOG"), blogHandler.DeleteBlog)
+	}
+
+	scene := crm.Group("/scene")
+	{
+		scene.Post("", pemMiddleware.CheckPermission("CREATE_SCENE"), sceneHandler.CreateScene)
+		scene.Put(":id/status", pemMiddleware.CheckPermission("UPDATE_SCENE"), sceneHandler.UpdateStatusScene)
 	}
 
 	c := calculateservices.NewService()

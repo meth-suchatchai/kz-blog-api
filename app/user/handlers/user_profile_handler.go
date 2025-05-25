@@ -17,6 +17,9 @@ func (h *defaultHandler) Profile(ctx *fiber.Ctx) error {
 	}
 
 	user, err := h.userService.UserProfile(int64(userId))
+	if err != nil {
+		return err
+	}
 
 	response := usermodels.ProfileResponse{UserProfile: usermodels.UserProfile{
 		Id:               user.Id,
